@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require('fs');
 const source = fs.readFileSync('./calc.wasm');
+const { performance } = require('perf_hooks');
 
 const host = 'localhost';
 const port = 8000;
@@ -39,12 +40,19 @@ const requestListener = function (req, res) {
     const url = req.url;
     if (url == '/wasm') {
         res.writeHead(200);
-        res.end(exports.factorial(30).toString());
+        var t0 = performance.now()
+        const output = exports.factorial(30).toString()
+        var t1 = performance.now()
+        res.end(`wasm took ${t1 - t0}`);
+
     }
 
     else if (url == '/js') {
         res.writeHead(200);
-        res.end(jsFactorial(30).toString());
+        var t0 = performance.now()
+        const output = exports.factorial(30).toString()
+        var t1 = performance.now()
+        res.end(`wasm took ${t1 - t0}`);
     }
     else {
         res.writeHead(200);
