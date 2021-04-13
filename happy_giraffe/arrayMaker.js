@@ -1,5 +1,5 @@
 
-export function createWA(inArray, memBuf) {
+function createWA(inArray, memBuf) {
     let wArray;
     if (inArray[0] % 1 == 0) {
         wArray = new Int32Array(memBuf, 0, inArray.length);
@@ -11,3 +11,5 @@ export function createWA(inArray, memBuf) {
 
     return wArray;
 }
+
+export { createWA };
