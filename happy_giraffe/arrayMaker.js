@@ -1,5 +1,4 @@
-
-function createWA(inArray, memBuf) {
+const createWA = (inArray, memBuf) => {
     let wArray;
     if (inArray[0] % 1 == 0) {
         wArray = new Int32Array(memBuf, 0, inArray.length);
@@ -12,4 +11,4 @@ function createWA(inArray, memBuf) {
     return wArray;
 }
 
-export { createWA };
+module.exports = createWA
