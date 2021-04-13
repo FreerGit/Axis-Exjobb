@@ -1,5 +1,34 @@
 #include <stdlib.h>  /* qsort() */
-#include <stdio.h>   /* printf() */
+// #include <stdio.h>   /* printf() */
+
+void quicksort(int* number,int first,int last){
+   int i, j, pivot, temp;
+
+   if(first<last){
+      pivot=first;
+      i=first;
+      j=last;
+
+      while(i<j){
+         while(number[i]<=number[pivot]&&i<last)
+            i++;
+         while(number[j]>number[pivot])
+            j--;
+         if(i<j){
+            temp=number[i];
+            number[i]=number[j];
+            number[j]=temp;
+         }
+      }
+
+      temp=number[pivot];
+      number[pivot]=number[j];
+      number[j]=temp;
+      quicksort(number,first,j-1);
+      quicksort(number,j+1,last);
+
+   }
+}
 
 int intcmp(const void *aa, const void *bb)
 {
@@ -10,17 +39,10 @@ int cmpfunc (const void * a, const void * b) {
    return ( *(int*)a - *(int*)b );
 }
 
-// extern void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void*));
-int testSort(int nums [], int len)
-{
-    // int numsx[5] = {2,4,3,1,2};
-    puts("fdsfsdfdsfsd");
-    
-    qsort(nums, len, sizeof(int), cmpfunc);
-    for(int x=0; x < len; x++){
-        printf("%d, ", nums[x]);
-    }
-    puts("done");
+int testSort(int* nums, int len)
+{    
+    // qsort(nums, len, sizeof(int), cmpfunc);
+    quicksort(nums, 0, len-1);
     return len;
 }
 double factorial(double a) {
@@ -30,10 +52,3 @@ double factorial(double a) {
 
 int main() {
 }
-
-// clang --target=wasm32-unknown-wasi --sysroot /tmp/wasi-libc -emit-llvm -c -S calc.c
-// clang --target=wasm32-unknown-wasi --sysroot /tmp/wasi-libc -emit-llvm -c -S calc.c
-
-// llc -march=wasm32 -filetype=obj calc.ll
-
-// wasm-ld-10 --no-entry --export-all -o calc.wasm calc.o

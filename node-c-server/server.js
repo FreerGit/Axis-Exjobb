@@ -1,45 +1,29 @@
 const http = require("http");
-const fs = require('fs');
-const { performance } = require('perf_hooks');
 const wasi = require('wasi');
-const { ccallArrays, cwrapArrays } = require("wasm-arrays")
+const { compileAndStart } = require('./wasmStartup.js')
+const { jsAndWasmQuickSort } = require('./benchmarks/quicksort.js')
 
 const host = 'localhost';
 const port = 8000;
 
 var wasiObj = new wasi.WASI();
 
+var memory = new WebAssembly.Memory({ initial: 65536, maximum: 65536 });
+
 const importObject = {
-    wasi_snapshot_preview1: wasiObj.wasiImport
+    wasi_snapshot_preview1: wasiObj.wasiImport,
+    memory
 };
 
-function getRandomArbitrary(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-}
 
-var unsortedList = [...Array(100).keys()].map(i => getRandomArbitrary(0, 20));
+const runWasmBenchmarks = async () => {
+    const { wasmInstance, wasmExports } = await compileAndStart(__dirname + "/calc.wasm");
 
-const testx = async () => {
+    await jsAndWasmQuickSort(wasmExports)
 
-    const wasm = await WebAssembly.instantiate(fs.readFileSync(__dirname + "/calc.wasm"), importObject);
-    module.exports = wasm.exports;
-
-    wasiObj.start(wasm.instance);
-
-    console.log(wasm.instance.exports)
-
-    const exp = wasm.instance.exports;
-    console.log('--------------------')
-    const array = new Int32Array(exp.memory.buffer, 0, 100)
-    array.set(unsortedList);
-
-    const myNumber = exp.testSort(array.byteOffset, array.length);
-    console.log('--------------------')
-
-    console.log(myNumber); // 2126
 };
 
-testx()
+runWasmBenchmarks()
 
 // const jsFactorial = (n) => {
 //     if (n < 2) return 1;
