@@ -13,12 +13,12 @@ int cmpfunc (const void * a, const void * b) {
 // extern void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void*));
 int testSort(int nums [], int len)
 {
-    int numsx[5] = {2,4,3,1,2};
+    // int numsx[5] = {2,4,3,1,2};
     puts("fdsfsdfdsfsd");
     
-    qsort(numsx, 5, sizeof(int), cmpfunc);
-    for(int x=0; x < 5; x++){
-        printf("%d, ", numsx[x]);
+    qsort(nums, len, sizeof(int), cmpfunc);
+    for(int x=0; x < len; x++){
+        printf("%d, ", nums[x]);
     }
     puts("done");
     return len;

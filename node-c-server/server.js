@@ -2,7 +2,7 @@ const http = require("http");
 const fs = require('fs');
 const { performance } = require('perf_hooks');
 const wasi = require('wasi');
-const fetch = require('node-fetch');
+const { ccallArrays, cwrapArrays } = require("wasm-arrays")
 
 const host = 'localhost';
 const port = 8000;
@@ -32,7 +32,16 @@ const testx = async () => {
 
     // }
     console.log(wasm.instance.exports)
-    const myNumber = wasm.instance.exports.testSort(unsortedList, unsortedList.length);
+    const exp = wasm.instance.exports;
+    console.log('--------------------')
+    // const myNumber = ccallArrays("testSort", "array", ["array"], { heapIn: "HEAP8", heapOut: "HEAP8", returnArraySize: 100 })
+    const array = new Int32Array(exp.memory.buffer, 0, 100)
+    array.set(unsortedList);
+
+    const myNumber = exp.testSort(array.byteOffset, array.length);
+    console.log('--------------------')
+
+    // const myNumber = exp.qsort(unsortedList, unsortedList.length, exp.cmpfunc)
     console.log(myNumber); // 2126
 };
 
