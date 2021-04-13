@@ -21,21 +21,19 @@ const createWA = (inArray, memBuf, type = "i", offset = 0) => {
             wArray = new UInt16Array(memBuf, offset, inArray.length);
             break;
         case "bi":
-            wArray = new Int64Array(memBuf, offset, inArray.length);
+            wArray = new BigInt64Array(memBuf, offset, inArray.length);
             break;
         case "bui":
-            wArray = new UInt64Array(memBuf, offset, inArray.length);
+            wArray = new BigUInt64Array(memBuf, offset, inArray.length);
             break;
         case "f":
             wArray = new Float32Array(memBuf, offset, inArray.length);
             break;
-        case "uf":
-            wArray = new UFloat32Array(memBuf, offset, inArray.length);
-            break;
         case "bf":
             wArray = new Float64Array(memBuf, offset, inArray.length);
-        case "buf":
-            wArray = new UFloat64Array(memBuf, offset, inArray.length);
+            break;
+        default:
+            return new Int32Array([0], 0, 1);
             
     }
 
