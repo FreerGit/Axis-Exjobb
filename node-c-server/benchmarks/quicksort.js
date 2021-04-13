@@ -1,4 +1,4 @@
-const createWA = require('../../happy_giraffe/arrayMaker.js')
+const { createWA } = require('../../happy_giraffe/arrayMaker.js')
 const { performance } = require('perf_hooks');
 
 function swap(items, leftIndex, rightIndex) {
@@ -52,18 +52,19 @@ const getRandomUnsortedList = (size, minRandom, maxRandom) => {
 
 
 const jsAndWasmQuickSort = async (wasm) => {
-    const unsortedList = getRandomUnsortedList(10000, 0, 500)
-    const array = createWA(unsortedList, wasm.memory.buffer)
-
+    const unsortedList = getRandomUnsortedList(10000000, 0, 100000)
+    const array = createWA(unsortedList, "sui", wasm.memory.buffer)
     console.log('--------------------')
     var t0 = performance.now()
     const myNumber = wasm.testSort(array.byteOffset, array.length);
+    console.log(`${array}`)
     var t1 = performance.now()
     console.log(`wasm took ${t1 - t0}`);
     console.log('--------------------')
 
     var t2 = performance.now()
     const xxx = quickSort(unsortedList, 0, unsortedList.length - 1)
+    console.log(`${xxx}`)
     var t3 = performance.now()
     console.log(`js took ${t3 - t2}`)
     console.log('--------------------')
