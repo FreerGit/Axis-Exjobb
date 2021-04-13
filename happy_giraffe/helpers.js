@@ -6,3 +6,5 @@ const isSorted = (sArray) => {
     });
     return true;
 }
+
+module.exports = { isSorted }
