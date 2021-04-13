@@ -2,3 +2,4 @@ node_modules
 *.wasm
 emsdk
 package-lock.json
+*.wat
