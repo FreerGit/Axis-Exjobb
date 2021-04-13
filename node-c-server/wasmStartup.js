@@ -22,8 +22,6 @@ const compileAndStart = async (path) => {
     wasmExports.memory.grow(3);
     console.log(wasmExports)
 
-    // console.log(`fdsafs: ${wasmExports.__heap_base}`)
-    // console.log(`fdsafs: ${wasmExports.memory}`)
     return { wasmInstance, wasmExports };
 }
 

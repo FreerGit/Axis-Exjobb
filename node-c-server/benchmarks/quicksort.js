@@ -56,20 +56,22 @@ const getRandomUnsortedList = (size, minRandom, maxRandom) => {
 const jsAndWasmQuickSort = async (wasm) => {
     const unsortedList = getRandomUnsortedList(20000, 0, 500)
     const array = createWA(unsortedList, wasm.memory.buffer, "i", 4)
-    // console.log(`${wasm.memory}`)
+
     console.log('--------------------')
+
     var t0 = performance.now()
     const myNumber = wasm.testSort(array.byteOffset, array.length);
-    console.log(`${array.length}`)
-    // console.log(isSorted(array))
+    console.log(isSorted(array))
     var t1 = performance.now()
+
     console.log(`wasm took ${t1 - t0}`);
     console.log('--------------------')
 
     var t2 = performance.now()
     const xxx = quickSort(unsortedList, 0, unsortedList.length - 1)
-    // console.log(isSorted(xxx))
+    console.log(isSorted(xxx))
     var t3 = performance.now()
+
     console.log(`js took ${t3 - t2}`)
     console.log('--------------------')
 
