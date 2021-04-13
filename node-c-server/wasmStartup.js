@@ -3,11 +3,13 @@ const fs = require('fs');
 
 var wasiObj = new wasi.WASI();
 
-var memory = new WebAssembly.Memory({ initial: 65536, maximum: 65536 });
+// var memory = new WebAssembly.Memory({ initial: 5, maximum: 10 });
 
 const importObject = {
     wasi_snapshot_preview1: wasiObj.wasiImport,
-    memory
+    // js: {
+    //     mem: memory
+    // }
 };
 
 
@@ -17,6 +19,11 @@ const compileAndStart = async (path) => {
     const wasmInstance = wasm.instance;
     const wasmExports = wasmInstance.exports
 
+    wasmExports.memory.grow(3);
+    console.log(wasmExports)
+
+    // console.log(`fdsafs: ${wasmExports.__heap_base}`)
+    // console.log(`fdsafs: ${wasmExports.memory}`)
     return { wasmInstance, wasmExports };
 }
 
