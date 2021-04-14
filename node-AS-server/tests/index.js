@@ -11,7 +11,14 @@ const doConcatString = (x, y) => {
     return product;
 }
 
+const doFibb = (n) => {
+    // let cache = new Map();
+    result = myModule.fib(n);
+    console.log(result)
+}
+
 assert.strictEqual(myModule.add(1, 2), 3);
 assert.strictEqual(doConcatString("hello", " World"), "hello World")
 
+doFibb(BigInt(1000));
 console.log('OK')
