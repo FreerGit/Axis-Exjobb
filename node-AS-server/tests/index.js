@@ -1,14 +1,17 @@
 const assert = require("assert");
 const myModule = require("..");
-assert.equal(myModule.add(1, 2), 3);
-console.log("ok");
+const { getString, newString } = require("../lib/helpers")
+
 
 const doConcatString = (x, y) => {
-    const xPtr = myModule.__newString(x);
-    const yPtr = myModule.__newString(y);
+    const xPtr = newString(x);
+    const yPtr = newString(y);
     const concat = myModule.concatString(xPtr, yPtr)
-    const product = myModule.__getString(concat);
+    const product = getString(concat);
     return product;
 }
 
-console.log(doConcatString("hello", " World"))
+assert.strictEqual(myModule.add(1, 2), 3);
+assert.strictEqual(doConcatString("hello", " World"), "hello World")
+
+console.log('OK')
