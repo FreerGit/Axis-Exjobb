@@ -20,7 +20,6 @@ const compileAndStart = async (path) => {
     const wasmExports = wasmInstance.exports
 
     wasmExports.memory.grow(3);
-    console.log(wasmExports)
 
     return { wasmInstance, wasmExports };
 }

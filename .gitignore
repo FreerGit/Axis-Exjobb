@@ -3,3 +3,4 @@ node_modules
 emsdk
 package-lock.json
 *.wat
+*.out

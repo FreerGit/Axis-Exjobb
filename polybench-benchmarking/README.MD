@@ -23,3 +23,7 @@ Vid compiletime produceras detta:
 (global $__heap_base i32 (i32.const 197632)) <- från stack size
 (global $__memory_base i32 (i32.const 0))
 (global $__table_base i32 (i32.const 1))
+
+CC="./wasi-sdk-12.0/bin/clang --sysroot=./wasi-sdk-12.0/share/wasi-sysroot -Wl,--initial-memory=327680 -Wl,--max-memory=6553600 -z stack-size=196608 --include-directory=polybench-src/PolyBenchC-4.2.1/utilities/ --include polybench-src/PolyBenchC-4.2.1/utilities/polybench.c -lm"
+
+CC="./wasi-sdk-12.0/bin/clang --sysroot=./wasi-sdk-12.0/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4.2.1/utilities/ --include polybench-src/PolyBenchC-4.2.1/utilities/polybench.c -O3"
