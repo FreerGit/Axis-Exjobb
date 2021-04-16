@@ -1,31 +1,36 @@
 const wasi = require('wasi');
 const fs = require('fs');
+const {
+    performance
+} = require('perf_hooks');
 
-var wasiObj = new wasi.WASI();
+var wasiObj = new wasi.WASI({
+    // returnOnExit: true
+});
+// console.log(wasiObj)
 
-var memory = new WebAssembly.Memory({ initial: 32767, maximum: 65536 });
+var memory = new WebAssembly.Memory({ initial: 10, maximum: 100 });
 
 const importObject = {
     wasi_snapshot_preview1: wasiObj.wasiImport,
-    memory
+    // js: { mem: memory }
 };
 
-const compileAndStart = async (path) => {
-    console.log(path)
 
+const compileAndStart = async (path) => {
     const wasm = await WebAssembly.instantiate(fs.readFileSync(path), importObject);
-    console.log('fdsfsdfdsfdsfsd')
+
+    start = performance.now();
     wasiObj.start(wasm.instance);
-    console.log('fdsfsdfdsfdxxxx')
+    end = performance.now();
+
+    console.log(`${end - start}`)
+
     const wasmInstance = wasm.instance;
     const wasmExports = wasmInstance.exports
 
-    wasmExports.memory.grow(3);
-
-    return { wasmInstance, wasmExports };
+    return { wasmExports };
 }
 
-module.exports = { compileAndStart }
 
-// -Wl,--initial-memory=327680 -Wl,--max-memory=6553600 -z stack-size=196608
-// CC="./wasi-sdk-12.0/bin/clang --sysroot=./wasi-sdk-12.0/share/wasi-sysroot -Wl,--initial-memory=327680 -Wl,--max-memory=6553600 -z stack-size=196608 --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3"
+module.exports = { compileAndStart }

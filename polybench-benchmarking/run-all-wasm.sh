@@ -1,16 +1,16 @@
-while getopts 'mtja' flag
+while getopts 'mta' flag
 do
     case "${flag}" in
         m) cmd="wasmer run" ;;
         t) cmd="wasmtime run" ;;
-        j) cmd="node --experimental-wasi-unstable-preview1 index.js " ;;
+        # j) cmd="node --experimental-wasi-unstable-preview1 index.js " ;;
         a) cmd="run-all"
     esac
 done
 
 main () {
     #note: dont count time if compiling.
-    if [ -z "$(ls -A ./wasm-binaries/)" ] or [ -z "$(ls -A ./c-binaries)" ]; then
+    if [ -z "$(ls -A ./wasm-binaries/)" ] || [ -z "$(ls -A ./c-binaries)" ]; then
         echo "Compiling!!!";
         eval "./compile-wasm.sh"
     fi
@@ -22,7 +22,7 @@ main () {
             filename=$(basename $benchmark .wasm)
             touch "./results/wasmer/${filename}.txt"
             touch "./results/wasmtime/${filename}.txt"
-            touch "./results/node/${filename}.txt"
+            # touch "./results/node/${filename}.txt"
             touch "./results/c/${filename}.txt"
         done;
     fi
@@ -36,12 +36,12 @@ main () {
             echo "running benchmark for ${filename}"
             wasmer=$(eval "wasmer run ${benchmark}");
             wasmtime=$(eval "wasmtime run ${benchmark}");
-            node=$(eval "node --experimental-wasi-unstable-preview1 --no-warnings index.js ${benchmark}");
+            # node=$(eval "node --experimental-wasi-unstable-preview1 --no-warnings index.js ${benchmark}");
             c=$(eval "./c-binaries/${filename}")
-            # echo "${wasmer}" >> ./results/wasmer/${filename}.txt
-            # echo "${wasmtime}" >> ./results/wasmtime/${filename}.txt
-            echo "${node}" >> ./results/node/${filename}.txt
-            # echo "${c}" >> ./results/c/${filename}.txt
+            echo "${wasmer}" >> ./results/wasmer/${filename}.txt
+            echo "${wasmtime}" >> ./results/wasmtime/${filename}.txt
+            # echo "${node}" >> ./results/node/${filename}.txt
+            echo "${c}" >> ./results/c/${filename}.txt
             echo $seperator 
 
         else
