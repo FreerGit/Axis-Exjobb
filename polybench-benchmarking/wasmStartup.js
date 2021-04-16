@@ -2,34 +2,30 @@ const wasi = require('wasi');
 const fs = require('fs');
 
 var wasiObj = new wasi.WASI();
-console.log(wasiObj)
 
-// var memory = new WebAssembly.Memory({ initial: 5, maximum: 10 });
+var memory = new WebAssembly.Memory({ initial: 32767, maximum: 65536 });
 
 const importObject = {
     wasi_snapshot_preview1: wasiObj.wasiImport,
-    // js: {
-    //     mem: memory
-    // }
+    memory
 };
 
-
 const compileAndStart = async (path) => {
+    console.log(path)
+
     const wasm = await WebAssembly.instantiate(fs.readFileSync(path), importObject);
-    console.log(wasm.instance.exports)
-    for (var x in wasm.instance.exports.memory) {
-        console.log(x)
-    }
+    console.log('fdsfsdfdsfdsfsd')
     wasiObj.start(wasm.instance);
-    console.log('fdsafsd')
+    console.log('fdsfsdfdsfdxxxx')
     const wasmInstance = wasm.instance;
     const wasmExports = wasmInstance.exports
 
     wasmExports.memory.grow(3);
-    console.log(wasmExports)
 
     return { wasmInstance, wasmExports };
 }
 
-
 module.exports = { compileAndStart }
+
+// -Wl,--initial-memory=327680 -Wl,--max-memory=6553600 -z stack-size=196608
+// CC="./wasi-sdk-12.0/bin/clang --sysroot=./wasi-sdk-12.0/share/wasi-sysroot -Wl,--initial-memory=327680 -Wl,--max-memory=6553600 -z stack-size=196608 --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3"
