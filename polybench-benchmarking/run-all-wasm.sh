@@ -21,7 +21,6 @@ main () {
         done;
     fi
     separator="---------------------------------"
-   
 
     for benchmark in $(ls -d -A ./wasm-binaries/*)
     do
