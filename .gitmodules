@@ -1,0 +1,3 @@
+[submodule "polybench-benchmarking/polybench-src/PolyBenchC-4"]
+	path = polybench-benchmarking/polybench-src/PolyBenchC-4
+	url = https://github.com/MatthiasJReisinger/PolyBenchC-4.2.1.git
