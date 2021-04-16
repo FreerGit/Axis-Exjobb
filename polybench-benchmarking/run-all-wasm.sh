@@ -34,4 +34,4 @@ main () {
     done;
 }
 
-time main cmd
+main cmd
