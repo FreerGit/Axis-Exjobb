@@ -1,10 +1,12 @@
-while getopts 'mta' flag
+while getopts 'mtalx' flag
 do
     case "${flag}" in
         m) cmd="wasmer run" ;;
         t) cmd="wasmtime run" ;;
         # j) cmd="node --experimental-wasi-unstable-preview1 index.js " ;;
-        a) cmd="run-all"
+        a) cmd="run-all" ;;
+        x) ostype="m" ;;
+        l) ostype="l" ;;
     esac
 done
 
@@ -12,7 +14,7 @@ main () {
     #note: dont count time if compiling.
     if [ -z "$(ls -A ./wasm-binaries/)" ] || [ -z "$(ls -A ./c-binaries)" ]; then
         echo "Compiling!!!";
-        eval "./compile-wasm.sh"
+        eval "./compile-wasm.sh ${type}"
     fi
     if [ -z "$(ls -A ./results/)" ]; then
         mkdir results/c; mkdir results/node; 
@@ -56,4 +58,4 @@ main () {
     done;
 }
 
-main cmd
+main cmd ostype

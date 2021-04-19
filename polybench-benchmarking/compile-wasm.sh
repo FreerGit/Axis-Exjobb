@@ -1,6 +1,16 @@
 #!/bin/bash
+while getopts 'ml' flag
+do
+    case "${flag}" in
+        m) cmd="wasi-sdk-12.0-macos" ;;
+        l) cmd="wasi-sdk-12.0" ;;
+    esac
+done
+
 function setup {
-    compile_command="CC=\"./wasi-sdk-12.0/bin/clang --sysroot=./wasi-sdk-12.0/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm -DPOLYBENCH_TIME\""
+    echo $cmd
+    echo "hejsvej"
+    compile_command="CC=\"./${cmd}/bin/clang --sysroot=./${cmd}/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm -DPOLYBENCH_TIME\""
     benchmark_path="./polybench-src/PolyBenchC-4/utilities/benchmark_list"
 
     root_to_poly_root="./polybench-src/PolyBenchC-4/"
@@ -47,5 +57,5 @@ function main {
     done < "$benchmark_path"
 }
 
-setup
+setup cmd
 main
