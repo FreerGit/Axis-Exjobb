@@ -1,7 +1,8 @@
 while getopts 'mtalx' flag
 do
     case "${flag}" in
-        m) cmd="wasmer run" ;;
+        m) cmd="wasmer run --llvm" ;;
+        s) cmd="wasmer run" ;;
         t) cmd="wasmtime run" ;;
         # j) cmd="node --experimental-wasi-unstable-preview1 index.js " ;;
         a) cmd="run-all" ;;
@@ -14,7 +15,7 @@ main () {
     #note: dont count time if compiling.
     if [ -z "$(ls -A ./wasm-binaries/)" ] || [ -z "$(ls -A ./c-binaries)" ]; then
         echo "Compiling!!!";
-        eval "./compile-wasm.sh ${type}"
+        eval "./compile-wasm.sh -${ostype}"
     fi
     if [ -z "$(ls -A ./results/)" ]; then
         mkdir results/c; mkdir results/node; 
@@ -36,11 +37,13 @@ main () {
             echo $separator
             filename=$(basename $benchmark .wasm)
             echo "running benchmark for ${filename}"
-            wasmer=$(eval "wasmer run ${benchmark}");
+            wasmerslow=$(eval "wasmer run ${benchmark}");
+            wasmerllm=$(eval "wasmer run -llvm ${benchmark}")
             wasmtime=$(eval "wasmtime run ${benchmark}");
             # node=$(eval "node --experimental-wasi-unstable-preview1 --no-warnings index.js ${benchmark}");
             c=$(eval "./c-binaries/${filename}")
-            echo "${wasmer}" >> ./results/wasmer/${filename}.txt
+            echo "${wasmerslow}" >> ./results/wasmerslow/${filename}.txt
+            echo "${wasmerllvm}" >> ./results/wasmerllvm/${filename}.txt
             echo "${wasmtime}" >> ./results/wasmtime/${filename}.txt
             # echo "${node}" >> ./results/node/${filename}.txt
             echo "${c}" >> ./results/c/${filename}.txt
@@ -51,7 +54,7 @@ main () {
             echo $benchmark
             filename=$(basename $benchmark .wasm)
             echo "running benchmark for ${filename}"
-            output=$(eval "${cmd} ${benchmark}");
+            output=$(eval "/usr/bin/time -l ${cmd} ${benchmark}");
             echo "${output}" >> ./results/${filename}.txt
             echo $seperator 
         fi
