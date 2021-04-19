@@ -31,7 +31,7 @@ main () {
             touch "./results/memory/c/${filename}.txt"
 
             touch "./results/time/wasmerllvm/${filename}.txt"
-            touch ".results/memory/wasmerllvm/${filename}.txt"
+            touch "./results/memory/wasmerllvm/${filename}.txt"
 
             touch "./results/time/wasmerslow/${filename}.txt"
             touch "./results/memory/wasmerslow/${filename}.txt"

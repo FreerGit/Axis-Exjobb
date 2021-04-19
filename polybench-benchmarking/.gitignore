@@ -1,7 +1,11 @@
 c-binaries
 
 # exclude everything
-results/*
+results/memory/*
+
+results/time/*
 
 # exception to the rule
-!results/.gitkeep 
+!results/memory/.gitkeep 
+
+!results/time/.gitkeep 
