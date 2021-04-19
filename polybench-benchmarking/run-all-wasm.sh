@@ -17,18 +17,27 @@ main () {
         echo "Compiling!!!";
         eval "./compile-wasm.sh -${ostype}"
     fi
-    if [ -z "$(ls -A ./results/)" ]; then
-        mkdir results/c; 
-        mkdir results/wasmerllvm; 
-        mkdir results/wasmerslow; 
-        mkdir results/wasmtime;
+    if [ -z "$(ls -A ./results/time)" ]; then
+        mkdir results/time
+        mkdir results/memory
+        mkdir results/time/c && mkdir results/memory/c; 
+        mkdir results/time/wasmerllvm && mkdir results/memory/wasmerllvm; 
+        mkdir results/time/wasmerslow && mkdir results/memory/wasmerslow; 
+        mkdir results/time/wasmtime && mkdir results/memory/wasmtime; 
         for benchmark in $(ls -d -A ./wasm-binaries/*)
         do
             filename=$(basename $benchmark .wasm)
-            touch "./results/wasmerllvm/${filename}.txt"
-            touch "./results/wasmerslow/${filename}.txt"
-            touch "./results/wasmtime/${filename}.txt"
-            touch "./results/c/${filename}.txt"
+            touch "./results/time/c/${filename}.txt"
+            touch "./results/memory/c/${filename}.txt"
+
+            touch "./results/time/wasmerllvm/${filename}.txt"
+            touch ".results/memory/wasmerllvm/${filename}.txt"
+
+            touch "./results/time/wasmerslow/${filename}.txt"
+            touch "./results/memory/wasmerslow/${filename}.txt"
+
+            touch "./results/time/wasmtime/${filename}.txt"
+            touch "./results/memory/wasmtime/${filename}.txt"
         done;
     fi
     separator="---------------------------------"
@@ -38,17 +47,19 @@ main () {
         if [ "$cmd" = "run-all" ]; then
             echo $separator
             filename=$(basename $benchmark .wasm)
+            gtime="gtime -f '%M' -o results/memory/"
             echo "running benchmark for ${filename}"
-            wasmerslow=$(eval "wasmer run ${benchmark}");
-            wasmerllm=$(eval "wasmer run -llvm ${benchmark}")
-            wasmtime=$(eval "wasmtime run ${benchmark}");
+            wasmerslow=$(eval "${gtime}wasmerslow/${filename}.txt wasmer run ${benchmark}");
+            wasmerllvm=$(eval "${gtime}wasmerllvm/${filename}.txt wasmer run --llvm ${benchmark}")
+            wasmtime=$(eval "${gtime}wasmtime/${filename}.txt wasmtime run ${benchmark}");
             # node=$(eval "node --experimental-wasi-unstable-preview1 --no-warnings index.js ${benchmark}");
-            c=$(eval "./c-binaries/${filename}")
-            echo "${wasmerslow}" >> ./results/wasmerslow/${filename}.txt
-            echo "${wasmerllvm}" >> ./results/wasmerllvm/${filename}.txt
-            echo "${wasmtime}" >> ./results/wasmtime/${filename}.txt
-            # echo "${node}" >> ./results/node/${filename}.txt
-            echo "${c}" >> ./results/c/${filename}.txt
+            c=$(eval "${gtime}c/${filename}.txt ./c-binaries/${filename}")
+
+            echo "${wasmerslow}" >> ./results/time/wasmerslow/${filename}.txt
+            echo "${wasmerllvm}" >> ./results/time/wasmerllvm/${filename}.txt
+            echo "${wasmtime}" >> ./results/time/wasmtime/${filename}.txt
+            #echo "${node}" >> ./results/node/${filename}.txt
+            echo "${c}" >> ./results/time/c/${filename}.txt
             echo $seperator 
 
         else
