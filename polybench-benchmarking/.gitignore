@@ -1,1 +1,7 @@
 c-binaries
+
+# exclude everything
+results/*
+
+# exception to the rule
+!results/.gitkeep 
