@@ -19,7 +19,9 @@ main () {
     fi
     if [ -z "$(ls -A ./results/time)" ]; then
         mkdir results/time
+        touch results/time/.gitkeep
         mkdir results/memory
+        touch results/memory/.gitkeep
         mkdir results/time/c && mkdir results/memory/c; 
         mkdir results/time/wasmerllvm && mkdir results/memory/wasmerllvm; 
         mkdir results/time/wasmerslow && mkdir results/memory/wasmerslow; 
@@ -44,10 +46,11 @@ main () {
 
     for benchmark in $(ls -d -A ./wasm-binaries/*)
     do
+        echo "USE PYTHON SCRIPT INSTEAD"
         if [ "$cmd" = "run-all" ]; then
             echo $separator
             filename=$(basename $benchmark .wasm)
-            gtime="gtime -f '%M' -o results/memory/"
+            gtime="gtime -f '%M %e' -ao results/memory/"
             echo "running benchmark for ${filename}"
             wasmerslow=$(eval "${gtime}wasmerslow/${filename}.txt wasmer run ${benchmark}");
             wasmerllvm=$(eval "${gtime}wasmerllvm/${filename}.txt wasmer run --llvm ${benchmark}")

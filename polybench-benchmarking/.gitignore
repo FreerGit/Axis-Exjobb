@@ -1,9 +1,10 @@
 c-binaries
+wasm-binaries
 
 # exclude everything
-results/memory/*
+#results/memory/*
 
-results/time/*
+#results/time/*
 
 # exception to the rule
 !results/memory/.gitkeep 

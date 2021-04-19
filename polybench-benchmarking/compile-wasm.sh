@@ -10,7 +10,7 @@ done
 function setup {
     echo $cmd
     echo "hejsvej"
-    compile_command="CC=\"./${cmd}/bin/clang --sysroot=./${cmd}/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm -DPOLYBENCH_TIME\""
+    compile_command="CC=\"./${cmd}/bin/clang --sysroot=./${cmd}/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm\""
     benchmark_path="./polybench-src/PolyBenchC-4/utilities/benchmark_list"
 
     root_to_poly_root="./polybench-src/PolyBenchC-4/"
@@ -50,7 +50,7 @@ function main {
         #Change echo to actual run command later
         cmd='$CC $root_to_poly_root${line:2} -o ./wasm-binaries/${name}.wasm'
         eval $cmd
-        cmd='clang -O3 -lm --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c $root_to_poly_root${line:2} -DPOLYBENCH_TIME -o c-binaries/${name}'
+        cmd='clang -O3 -lm --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c $root_to_poly_root${line:2} -o c-binaries/${name}'
         eval $cmd
         ((_cntr=_cntr+1))
         ProgressBar ${_cntr} ${_end}
