@@ -18,14 +18,16 @@ main () {
         eval "./compile-wasm.sh -${ostype}"
     fi
     if [ -z "$(ls -A ./results/)" ]; then
-        mkdir results/c; mkdir results/node; 
-        mkdir results/wasmer; mkdir results/wasmtime;
+        mkdir results/c; 
+        mkdir results/wasmerllvm; 
+        mkdir results/wasmerslow; 
+        mkdir results/wasmtime;
         for benchmark in $(ls -d -A ./wasm-binaries/*)
         do
             filename=$(basename $benchmark .wasm)
-            touch "./results/wasmer/${filename}.txt"
+            touch "./results/wasmerllvm/${filename}.txt"
+            touch "./results/wasmerslow/${filename}.txt"
             touch "./results/wasmtime/${filename}.txt"
-            # touch "./results/node/${filename}.txt"
             touch "./results/c/${filename}.txt"
         done;
     fi
