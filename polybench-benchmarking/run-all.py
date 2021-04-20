@@ -13,7 +13,7 @@ def timeCall(fcall):
 def writeTime(runtime, filename, timeObj):
   
   with open(f"./results/time/{runtime}/{filename}.txt","a+") as f:
-    f.write(str(timeObj.total_seconds()))
+    f.write(str(timeObj.total_seconds())+'\n')
 
 def main():
     runargs=sys.argv[1]
@@ -63,14 +63,14 @@ def main():
             gtime="gtime -f '%M' -ao results/memory/"
             print(f'running benchmark for {filename}')
             
-            calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
-            writeTime("wasmerslow", filename, calltime)
+            #calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
+            #writeTime("wasmerslow", filename, calltime)
 
-            calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
-            writeTime("wasmerllvm", filename, calltime)
+            #calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
+            #writeTime("wasmerllvm", filename, calltime)
 
-            calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
-            writeTime("wasmtime", filename, calltime)
+            #calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
+            #writeTime("wasmtime", filename, calltime)
 
             calltime = timeCall(f"{gtime}c/{filename}.txt ./c-binaries/{filename}")
             writeTime("c", filename, calltime)
