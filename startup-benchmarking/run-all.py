@@ -16,7 +16,7 @@ def writeTime(runtime, filename, timeObj):
 def main():
     runargs=sys.argv[1]
     osarg=sys.argv[2]
-    
+
     cmds={
       "wasmerslow": "wasmer run ",
       "wasmerllvm": "wasmer run --llvm ",
@@ -25,7 +25,7 @@ def main():
     }
     cmd = cmds[runargs]
     passes = 1
-    
+
     if cmd == "run-all":
       passes = int(input("How many passes? "))
 
@@ -35,7 +35,7 @@ def main():
     }
 
     ost = ostype[osarg]
-        
+
     if not os.path.exists('./wasm-binaries') or not os.path.exists('./c-binaries'):
         subprocess.call("./compile-all.sh -" + ost, shell=True)
 
@@ -57,21 +57,22 @@ def main():
           for benchmark in os.listdir('./wasm-binaries'):
             print(seperator)
             filename=subprocess.check_output(f'basename {benchmark} .wasm', shell=True).decode('UTF-8').rstrip("\n")
-            print(f'running benchmark for {filename}')
-            
-            calltime = timeCall(f"wasmer run ./wasm-binaries/{benchmark}")
+            gtime=f"gtime -f '%M' -ao results/"
+            print(f'running benchmark for {benchmark}')
+
+            calltime = timeCall(f"{gtime}wasmerslow/memory.txt wasmer run ./wasm-binaries/{benchmark}")
             writeTime("wasmerslow", filename, calltime)
 
-            calltime = timeCall(f"wasmer run --llvm ./wasm-binaries/{benchmark}")
+            calltime = timeCall(f"{gtime}wasmerllvm/memory.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
             writeTime("wasmerllvm", filename, calltime)
 
-            calltime = timeCall(f"wasmtime run ./wasm-binaries/{benchmark}")
+            calltime = timeCall(f"{gtime}wasmtime/memory.txt wasmtime run ./wasm-binaries/{benchmark}")
             writeTime("wasmtime", filename, calltime)
 
-            calltime = timeCall(f"./c-binaries/{filename}")
+            calltime = timeCall(f"{gtime}c/memory.txt ./c-binaries/{filename}")
             writeTime("c", filename, calltime)
 
-            calltime = timeCall(f"docker run --rm --name=benchmark alpine ping -c 1 8.8.8.8")
+            calltime = timeCall(f"{gtime}docker/memory.txt docker run --rm --name=benchmark alpine ping -c 1 8.8.8.8")
             writeTime("docker", filename, calltime)
       else:
         pass
