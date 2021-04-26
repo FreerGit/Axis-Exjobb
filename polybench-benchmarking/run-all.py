@@ -84,7 +84,7 @@ def main():
             pwd = os.getcwd()
             copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
             chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
-            calltime = timeCall(f"{gtime}c/{filename}.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
+            calltime = timeCall(f"{gtime}c/{filename}.txt docker run --no-cache --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
             writeTime("c", filename, calltime)
       else:
         pass
