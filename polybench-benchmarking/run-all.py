@@ -45,14 +45,14 @@ def main():
     if len(os.listdir('./wasm-binaries')) == 0 or len(os.listdir('./c-binaries')) == 0:
         rc = subprocess.call("./compile-wasm.sh -" + ost, shell=True)
 
-    if len(os.listdir('./results')) == 1:
+    if len(os.listdir('./results')) <= 1:
         subprocess.call("mkdir ./results/time && mkdir ./results/memory", shell=True)
         subprocess.call("mkdir ./results/time/c && mkdir ./results/memory/c",shell=True )
         subprocess.call("mkdir ./results/time/wasmerslow && mkdir ./results/memory/wasmerslow", shell=True)
         subprocess.call("mkdir ./results/time/wasmerllvm && mkdir ./results/memory/wasmerllvm", shell=True)
         subprocess.call("mkdir ./results/time/wasmtime && mkdir ./results/memory/wasmtime", shell=True)
 
-    cntr = 0
+    cntr = 1
     seperator="-"*30
     while cntr <= passes:
       cntr += 1
@@ -60,19 +60,31 @@ def main():
           for benchmark in os.listdir('./wasm-binaries'):
             print(seperator)
             filename=subprocess.check_output(f'basename {benchmark} .wasm', shell=True).decode('UTF-8').rstrip("\n")
-            gtime="gtime -f '%M' -ao results/memory/"
+            if ost == "l":
+              gtime="/usr/bin/time -f '%M' -ao results/memory/"
+            elif ost == "m":
+              gtime="gtime -f '%M' -ao results/memory/"
+
             print(f'running benchmark for {filename}')
             
+            #wasmerslow
             calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
             writeTime("wasmerslow", filename, calltime)
 
+            #wasmerllvm
             calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
             writeTime("wasmerllvm", filename, calltime)
 
+            #wasmtime
             calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
             writeTime("wasmtime", filename, calltime)
 
+            #docker hot start
             calltime = timeCall(f"{gtime}c/{filename}.txt ./c-binaries/{filename}")
+            pwd = os.getcwd()
+            copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
+            chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
+            calltime = timeCall(f"{gtime}c/{filename}.txt docker run --no-cache --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
             writeTime("c", filename, calltime)
       else:
         pass
