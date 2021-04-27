@@ -2,24 +2,25 @@
 while getopts 'ml' flag
 do
     case "${flag}" in
-        m) cmd="wasi-sdk-12.0-macos" ;;
-        l) cmd="wasi-sdk-12.0" ;;
+        m) arch="wasi-sdk-12.0-macos" ;;
+        l) arch="wasi-sdk-12.0-linux" ;;
     esac
 done
 
 function setup {
-    echo $cmd
-    echo "hejsvej"
-    compile_command="CC=\"./${cmd}/bin/clang --sysroot=./${cmd}/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm\""
+    # Copy over correct wasi-sdk
+    cp -r ../wasi-sdks/$arch .;
+
+    [[ ! -d c-binaries ]] && mkdir ./c-binaries || echo found c-binaries/;
+    [[ ! -d wasm-binaries ]] && mkdir ./wasm-binaries || echo found wasm-binaries/;
+
+    compile_command="CC=\"./${arch}/bin/clang --sysroot=./${arch}/share/wasi-sysroot --include-directory=polybench-src/PolyBenchC-4/utilities/ --include polybench-src/PolyBenchC-4/utilities/polybench.c -O3 -lm\""
     benchmark_path="./polybench-src/PolyBenchC-4/utilities/benchmark_list"
 
     root_to_poly_root="./polybench-src/PolyBenchC-4/"
 
     # echo $compile_command
     eval $compile_command
-
-    [[ ! -d c-binaries ]] && mkdir ./c-binaries || echo found c-binaries/;
-    [[ ! -d wasm-binaries ]] && mkdir ./wasm-binaries || echo found wasm-binaries/;
 }
 
 
@@ -35,7 +36,7 @@ function ProgressBar {
     _empty=$(printf "%${_left}s")
 
     # 1.2 Build progressbar strings and print the ProgressBar line
-    # 1.2.1 Output example:                           
+    # 1.2.1 Output example:
     # 1.2.1.1 Progress : [########################################] 100%
     printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%"
 
@@ -55,7 +56,9 @@ function main {
         ((_cntr=_cntr+1))
         ProgressBar ${_cntr} ${_end}
     done < "$benchmark_path"
+
+    rm -rf ./$arch
 }
 
-setup cmd
-main
+setup arch
+main arch
