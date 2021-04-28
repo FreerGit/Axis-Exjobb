@@ -1,19 +1,19 @@
 const http = require("http");
-const wasi = require('wasi');
+// const wasi = require('wasi');
 const { compileAndStart } = require('./wasmStartup.js')
 const { jsAndWasmQuickSort } = require('./benchmarks/quicksort.js')
 
 const host = 'localhost';
 const port = 8000;
 
-var wasiObj = new wasi.WASI();
+// var wasiObj = new wasi.WASI();
 
-var memory = new WebAssembly.Memory({ initial: 65536, maximum: 65536 });
+// var memory = new WebAssembly.Memory({ initial: 65536, maximum: 65536 });
 
-const importObject = {
-    wasi_snapshot_preview1: wasiObj.wasiImport,
-    memory
-};
+// const importObject = {
+//     wasi_snapshot_preview1: wasiObj.wasiImport,
+//     memory
+// };
 
 
 const runWasmBenchmarks = async () => {

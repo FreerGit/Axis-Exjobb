@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@assemblyscript/loader": "^0.18.24",
+    "@assemblyscript/loader": "^0.18.28",
     "fetch": "^1.1.0",
     "node-fetch": "^2.6.1",
     "wasi": "^0.0.6",
