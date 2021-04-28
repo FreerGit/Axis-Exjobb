@@ -4,3 +4,6 @@
 [submodule "deflated-llama/wasmtime"]
 	path = deflated-llama/wasmtime
 	url = https://github.com/bytecodealliance/wasmtime
+[submodule "deflated-llama/c-as/deflated-llama/c-as/wasmtime"]
+	path = deflated-llama/c-as/deflated-llama/c-as/wasmtime
+	url = https://github.com/bytecodealliance/wasmtime
