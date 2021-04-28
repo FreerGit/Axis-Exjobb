@@ -1,9 +1,6 @@
 [submodule "polybench-benchmarking/polybench-src/PolyBenchC-4"]
 	path = polybench-benchmarking/polybench-src/PolyBenchC-4
 	url = https://github.com/MatthiasJReisinger/PolyBenchC-4.2.1.git
-[submodule "deflated-llama/wasmtime"]
-	path = deflated-llama/wasmtime
-	url = https://github.com/bytecodealliance/wasmtime
-[submodule "deflated-llama/c-as/deflated-llama/c-as/wasmtime"]
-	path = deflated-llama/c-as/deflated-llama/c-as/wasmtime
-	url = https://github.com/bytecodealliance/wasmtime
+[submodule "deflated-llama/c-as/wasmtime"]
+	path = deflated-llama/c-as/wasmtime
+	url = https://github.com/bytecodealliance/wasmtime.git

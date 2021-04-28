@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests",
-    "asbuild:untouched": "asc assembly/index.ts --target debug",
-    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild:optimized-wasi": "asc assembly/index-wasi.ts -b build/optimized-wasi.wasm",
+    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm",
     "asbuild:test": "asc assembly/index.ts -b hello.wasm",
-    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
+    "asbuild-wasi": "npm run asbuild:optimized-wasi",
+    "asbuild": "npm run asbuild:optimized"
   },
   "author": "",
   "license": "ISC",

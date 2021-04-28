@@ -6,18 +6,20 @@ ARG SDK=acap-sdk
 
 FROM ${REPO}/${SDK}:${VERSION}-${ARCH}-ubuntu${UBUNTU_VERSION}
 
-# Building the ACAP application
-COPY . /opt/app/
+COPY deflated-llama/c-as/ /opt/app/
 WORKDIR /opt/app
-# RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
 
-RUN apt-get install -y curl
-RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y \
-  nodejs
+COPY wasi-sdks/wasi-sdk-12.0-linux /opt/app
+ADD deflated-llama/c-as/build /opt/app
 
 RUN curl https://get.wasmer.io -sSfL | sh
 
-RUN npm run asbuild:optimized
+RUN apt-get update
 
-CMD . /root/.wasmer/wasmer.sh && wasmer run build/optimized.wasm
+RUN apt install -y clang
+
+CMD . /root/.wasmer/wasmer.sh \
+    && wasmer run build/optimized-wasi.wasm \
+    && cd src/wasmer \
+    && make compile \
+    && ./wasmer_test 25 11

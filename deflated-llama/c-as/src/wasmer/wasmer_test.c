@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-  FILE *file = fopen("../../build/optimized.wasm", "rb");
+  FILE *file = fopen("../../build/optimized.wasm", "r");
 
   if (!file) {
 	  printf("> Error loading module!\n");
