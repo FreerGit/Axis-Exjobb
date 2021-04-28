@@ -11,12 +11,8 @@ COPY . /opt/app/
 WORKDIR /opt/app
 # RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get install -y curl
 
-RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y \
-  nodejs
+RUN curl https://get.wasmer.io -sSfL | sh
 
-RUN npm run asbuild:optimized
-
-CMD ["node", "--experimental-wasm-bigint", "tests/index.js"]
+CMD . /root/.wasmer/wasmer.sh && wapm install cowsay && wapm run cowsay "WASMTIME"
