@@ -5,87 +5,48 @@
 #include <stdlib.h>
 #include <wasm.h>
 #include <wasmtime.h>
+#include "wasmtime_wrapper.h"
 
 int main()
 {
   // Set up context
-  wasm_engine_t *engine = wasm_engine_new();
-  assert(engine != NULL);
-  wasm_store_t *store = wasm_store_new(engine);
-  assert(store != NULL);
-
-  // Load wasm file
-  FILE *file = fopen("build/optimized.wasm", "r");
-  if (!file)
-  {
-    printf("> Error loading file! %s\n", strerror(errno));
-    return 1;
-  }
-  fseek(file, 0L, SEEK_END);
-  size_t file_size = ftell(file);
-  fseek(file, 0L, SEEK_SET);
-  wasm_byte_vec_t wasm;
-  wasm_byte_vec_new_uninitialized(&wasm, file_size);
-  if (fread(wasm.data, file_size, 1, file) != 1)
-  {
-    printf("> Error loading module!\n");
-    return 1;
-  }
-  fclose(file);
-
-  // Compile and instantiate module
-  wasm_module_t *module = NULL;
-  wasmtime_module_new(engine, &wasm, &module);
-  if (module == NULL)
-  {
-    printf("> Failed to compile module!\n");
-    return 1;
-  }
-  wasm_byte_vec_delete(&wasm);
-
-  wasm_trap_t *trap = NULL;
-  wasm_instance_t *instance = NULL;
-  wasm_extern_vec_t imports = WASM_EMPTY_VEC;
-  wasmtime_instance_new(store, module, &imports, &instance, &trap);
-  if (instance == NULL)
-  {
-    printf("> Failed to instantiate!\n");
-    return 1;
-  }
+  instance_t instance;
+  wrapper_instantiate_no_wasi("build/optimized.wasm", &instance);
 
   // Lookup exported function
-  wasm_extern_vec_t externs;
-  wasm_instance_exports(instance, &externs);
   // printf("%s", externs.data[0]);
   // return 0;
-  // assert(externs.size == 1);
-  wasm_func_t *gcd = wasm_extern_as_func(externs.data[0]);
+  // assert(instance.externs.size == 1);
+  wasm_func_t *gcd = wasm_extern_as_func(instance.externs.data[0]);
+  wasm_func_t *adder = wasm_extern_as_func(instance.externs.data[1]);
   assert(gcd != NULL);
+  assert(adder != NULL);
 
   // Call to gcd
   int a = 48;
   int b = 18;
-  wasm_val_t params[2] = { WASM_I32_VAL(a), WASM_I32_VAL(b) };
+  wasm_val_t params[2] = {WASM_I32_VAL(a), WASM_I32_VAL(b)};
   wasm_val_t results[1];
   wasm_val_vec_t params_vec = WASM_ARRAY_VEC(params);
   wasm_val_vec_t results_vec = WASM_ARRAY_VEC(results);
-
+  wasm_trap_t *trap = NULL;
   wasmtime_error_t *error = wasmtime_func_call(gcd, &params_vec, &results_vec, &trap);
+  printf("gcd(%d, %d) = %d\n", a, b, results[0].of.i32);
+  error = wasmtime_func_call(adder, &params_vec, &results_vec, &trap);
+  printf("add(%d, %d) = %d\n", a, b, results[0].of.i32);
 
   if (error != NULL || trap != NULL)
   {
     printf("> Error while executing!\n");
-    return 1;
+    // return 1;
   }
   assert(results[0].kind == WASM_I32);
 
-  printf("gcd(%d, %d) = %d\n", a, b, results[0].of.i32);
-
   // Clean up after ourselves
-  wasm_extern_vec_delete(&externs);
-  wasm_instance_delete(instance);
-  wasm_module_delete(module);
-  wasm_store_delete(store);
-  wasm_engine_delete(engine);
+  wasm_extern_vec_delete(&instance.externs);
+  wasm_instance_delete(instance.wasm_instance);
+  wasm_module_delete(instance.module);
+  wasm_store_delete(instance.store);
+  wasm_engine_delete(instance.engine);
   return 0;
 }
