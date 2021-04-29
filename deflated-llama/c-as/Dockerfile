@@ -12,14 +12,24 @@ WORKDIR /opt/app
 COPY wasi-sdks/wasi-sdk-12.0-linux /opt/app
 ADD deflated-llama/c-as/build /opt/app
 
+RUN curl https://wasmtime.dev/install.sh -sSf | bash
 RUN curl https://get.wasmer.io -sSfL | sh
+RUN /bin/bash -c "source /root/.bashrc"
 
 RUN apt-get update
 
-RUN apt install -y clang
+RUN apt-get install -y clang
 
+# ENTRYPOINT [ "/bin/bash" ]
+SHELL ["/bin/bash", "-c"]
 CMD . /root/.wasmer/wasmer.sh \
+    && echo "wasmer:" \
     && wasmer run build/optimized-wasi.wasm \
+    && source /root/.bashrc \
+    && export WASMTIME_HOME="$HOME/.wasmtime" \
+    && export PATH="$WASMTIME_HOME/bin:$PATH" \
+    && echo "wasmtime:" \
+    && wasmtime run build/optimized-wasi.wasm \
     && cd src/wasmer \
     && make compile \
     && ./wasmer_test 25 11
