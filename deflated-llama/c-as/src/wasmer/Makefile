@@ -5,14 +5,9 @@ LDLIBS = $(shell $(WASMER_DIR)/bin/wasmer config --libs)
 .SILENT: wasmer_test wasmer_test.o
 wasmer_test: wasmer_test.o
 
-compile: clean wasmer_test cleanup
+all: clean wasmer_test
 
 .PHONY: clean
 .SILENT: clean
 clean:
-	rm -f wasmer_test.o wasmer_test wasmtime_test.o wasmtime_test
-
-.PHONY: cleanup
-.SILENT: cleanup
-cleanup:
-	rm -f wasmer_test.o wasmtime_test.o
+	rm -f wasmer_test.o wasmer_test
