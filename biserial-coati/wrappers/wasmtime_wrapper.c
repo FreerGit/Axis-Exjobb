@@ -19,6 +19,8 @@ void wrapper_instantiate_universal(char *filename, instance_t *inst)
   inst->store = wasm_store_new(inst->engine);
   assert(inst->store != NULL);
 
+  wasm_name_new_from_string(&inst->name, "");
+
   // Load wasm file
   FILE *file = fopen(filename, "r");
   if (!file)
@@ -61,6 +63,67 @@ void wrapper_instantiate_no_wasi(char *filename, instance_t *inst)
   // Lookup exported function
   wasm_extern_vec_t externs;
   wasm_instance_exports(inst->wasm_instance, &inst->externs);
+}
+
+void wrapper_instantiate_wasi(char *filename, instance_t *inst)
+{
+  wrapper_instantiate_universal(filename, inst);
+
+  // Instantiate WASI
+  wasi_config_t *wasi_config = wasi_config_new();
+  assert(wasi_config);
+  wasi_config_inherit_argv(wasi_config);
+  wasi_config_inherit_env(wasi_config);
+  wasi_config_inherit_stdin(wasi_config);
+  wasi_config_inherit_stdout(wasi_config);
+  wasi_config_inherit_stderr(wasi_config);
+  wasm_trap_t *trap = NULL;
+  inst->wasi_instance = wasi_instance_new(
+    inst->store, 
+    "wasi_snapshot_preview1", 
+    wasi_config,
+    &trap    
+  );
+  if (inst->wasm_instance == NULL)
+    exit_with_error("Failed to instantiate WASI!", NULL, trap);
+
+  // Link wasi
+  wasmtime_linker_t *linker = wasmtime_linker_new(inst->store);
+  wasmtime_error_t *error = wasmtime_linker_define_wasi(
+    linker, 
+    inst->wasi_instance
+  );
+  if (error != NULL)
+    exit_with_error("Failed to link WASI!", error, NULL);
+
+  // Instantiate module
+  error = wasmtime_linker_module(linker, &inst->name, inst->module);
+  if (error != NULL)
+    exit_with_error("Failed to instantiate module!", error, NULL);
+}
+
+void wrapper_clean_up(instance_t *inst) 
+{
+  if (inst->engine != NULL)
+    wasm_engine_delete(inst->engine);
+
+  if (inst->wasi_instance != NULL)
+    wasi_instance_delete(inst->wasi_instance);
+  
+  if (inst->wasm_instance != NULL)
+    wasm_instance_delete(inst->wasm_instance);
+  
+  // Could cause segfault, but shouldn't
+  wasm_name_delete(&inst->name);
+
+  if (inst->module != NULL)
+    wasm_module_delete(inst->module);
+
+  if (inst->store != NULL)
+    wasm_store_delete(inst->store);
+
+  if (inst->externs.size > 0)
+    wasm_extern_vec_delete(&inst->externs);
 }
 
 static void exit_with_error(const char *message, wasmtime_error_t *error, wasm_trap_t *trap)

@@ -43,10 +43,7 @@ int main()
   assert(results[0].kind == WASM_I32);
 
   // Clean up after ourselves
-  wasm_extern_vec_delete(&instance.externs);
-  wasm_instance_delete(instance.wasm_instance);
-  wasm_module_delete(instance.module);
-  wasm_store_delete(instance.store);
-  wasm_engine_delete(instance.engine);
+  wrapper_clean_up(&instance);
+  
   return 0;
 }
