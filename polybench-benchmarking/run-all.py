@@ -67,24 +67,24 @@ def main():
 
             print(f'running benchmark for {filename}')
             
-            #wasmerslow
-            calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
-            writeTime("wasmerslow", filename, calltime)
+            # #wasmerslow
+            # calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
+            # writeTime("wasmerslow", filename, calltime)
 
-            #wasmerllvm
-            calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
-            writeTime("wasmerllvm", filename, calltime)
+            # #wasmerllvm
+            # calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
+            # writeTime("wasmerllvm", filename, calltime)
 
-            #wasmtime
-            calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
-            writeTime("wasmtime", filename, calltime)
+            # #wasmtime
+            # calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
+            # writeTime("wasmtime", filename, calltime)
 
             #docker hot start
-            calltime = timeCall(f"{gtime}c/{filename}.txt ./c-binaries/{filename}")
+            # calltime = timeCall(f"{gtime}c/{filename}.txt ./c-binaries/{filename}")
             pwd = os.getcwd()
             copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
             chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
-            calltime = timeCall(f"{gtime}c/{filename}.txt docker run --no-cache --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
+            calltime = timeCall(f"{gtime}c/{filename}.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
             writeTime("c", filename, calltime)
       else:
         pass

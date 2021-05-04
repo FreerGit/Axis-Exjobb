@@ -1,0 +1,16 @@
+Command terminated by signal 2
+31340
+Command terminated by signal 2
+31340
+Command terminated by signal 2
+31340
+31348
+Command exited with non-zero status 126
+23612
+31348
+Command exited with non-zero status 126
+23252
+Command exited with non-zero status 126
+23416
+Command exited with non-zero status 126
+23832
