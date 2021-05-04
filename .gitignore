@@ -1,3 +1,18 @@
+# Ignore all, for ignoring executable binaries
+*
+
+# Unignore all with extension
+!*.*
+
+# Unignore .x files
+!.*
+
+# Ignore .o-files
+*.o
+
+# Ignore .map-files
+*.map
+
 node_modules
 *.wasm
 emsdk
