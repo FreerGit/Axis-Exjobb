@@ -18,8 +18,8 @@ def writeTime(runtime, filename, timeObj):
 
 def main():
   # Check for correct numbers of args in argv
-  if sys.argc != 2:
-    print(f"Wrong number of arguments provided, 1 needed, {len(sys.argv) provided")
+  if len(sys.argv) != 2:
+    print(f"Wrong number of arguments provided, 1 needed, {len(sys.argv)} provided")
     exit();
   #  Either l for linux or m for macos, aarhc not needed for startup
   osarg=sys.argv[1]
@@ -49,7 +49,10 @@ def main():
     cntr += 1
     for benchmark in os.listdir('./wasm-binaries'):
       filename=subprocess.check_output(f'basename {benchmark} .wasm', shell=True).decode('UTF-8').rstrip("\n")
-      gtime=f"gtime -f '%M' -ao results/"
+      if osarg == "l":
+        gtime=f"/usr/bin/time -f '%M' -ao results/"
+      elif osarg == "m":
+        gtime=f"gtime -f '%M' -ao results/"
 
       print(seperator)
       print(f'running benchmark for {benchmark}')
