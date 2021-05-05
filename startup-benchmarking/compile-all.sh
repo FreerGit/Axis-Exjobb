@@ -15,7 +15,12 @@ function setup {
     [[ ! -d wasm-binaries ]] && mkdir ./wasm-binaries || echo found wasm-binaries/;
     [[ ! -d c-binaries ]] && mkdir ./c-binaries || echo found c-binaries/;
 
+    if uname -a | grep aarch64
+    then
+    ./$cmd/bin/clang --target=wasi32-unknown --sysroot=./$cmd/share/wasi-sysroot src/startup.c -o wasm-binaries/startup.wasm
+    else
     ./$cmd/bin/clang --sysroot=./$cmd/share/wasi-sysroot src/startup.c -o wasm-binaries/startup.wasm
+    fi
     gcc src/startup.c -o c-binaries/startup
 
     rm -rf ./$cmd
