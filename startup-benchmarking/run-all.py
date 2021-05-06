@@ -66,9 +66,6 @@ def main():
       calltime = timeCall(f"{gtime}wasmtime/memory.txt wasmtime run ./wasm-binaries/{benchmark}")
       writeTime("wasmtime", filename, calltime)
 
-      # calltime = timeCall(f"{gtime}c/memory.txt ./c-binaries/{filename}")
-      # writeTime("c", filename, calltime)
-
       pwd = os.getcwd()
       copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
       chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
