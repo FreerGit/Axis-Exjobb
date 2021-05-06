@@ -14,7 +14,7 @@ def timeCall(fcall):
 # Writes the time to filename
 def writeTime(runtime, filename, timeObj):
   with open(f"./results/{runtime}/{filename}.txt","a+") as f:
-    f.write(str(timeObj)+'\n')
+      f.write(str(timeObj)+'\n')
 
 def main():
   # Check for correct numbers of args in argv
@@ -38,7 +38,7 @@ def main():
   # If the results folder doesn't have all folders, create them
   if len(os.listdir('./results')) < 2:
     subprocess.call("mkdir ./results/wasmerslow", shell=True)
-    subprocess.call("mkdir ./results/wasmerfast", shell=True)
+    subprocess.call("mkdir ./results/wasmerllvm", shell=True)
     subprocess.call("mkdir ./results/wasmtime", shell=True)
     subprocess.call("mkdir ./results/docker", shell=True)
 
@@ -60,20 +60,21 @@ def main():
       calltime = timeCall(f"{gtime}wasmerslow/memory.txt wasmer run ./wasm-binaries/{benchmark}")
       writeTime("wasmerslow", filename, calltime)
 
-      calltime = timeCall(f"{gtime}wasmerllvm/memory.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
+      calltime = timeCall(f"{gtime}wasmerllvm/memory.txt wasmer run --llvm --native ./wasm-binaries/{benchmark}")
       writeTime("wasmerllvm", filename, calltime)
 
       calltime = timeCall(f"{gtime}wasmtime/memory.txt wasmtime run ./wasm-binaries/{benchmark}")
       writeTime("wasmtime", filename, calltime)
 
+      # calltime = timeCall(f"{gtime}c/memory.txt ./c-binaries/{filename}")
+      # writeTime("c", filename, calltime)
+
       pwd = os.getcwd()
       copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
       chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
-      calltime = timeCall(f"{gtime}docker/{filename}.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
+      calltime = timeCall(f"{gtime}docker/memory.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
       writeTime("docker", filename, calltime)
 
-      calltime = timeCall(f"{gtime}docker/memory.txt docker run --rm --name=benchmark alpine ping -c 1 8.8.8.8")
-      writeTime("docker", filename, calltime)
     print(seperator)
 
 if __name__ == "__main__":

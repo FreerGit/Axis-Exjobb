@@ -17,7 +17,7 @@ function setup {
 
     if uname -a | grep aarch64
     then
-    ./$cmd/bin/clang --target=wasi32-unknown --sysroot=./$cmd/share/wasi-sysroot src/startup.c -o wasm-binaries/startup.wasm
+    clang --target=wasm32-wasi --sysroot=./$cmd/share/wasi-sysroot src/startup.c -o wasm-binaries/startup.wasm
     else
     ./$cmd/bin/clang --sysroot=./$cmd/share/wasi-sysroot src/startup.c -o wasm-binaries/startup.wasm
     fi
