@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@assemblyscript/loader": "^0.18.24"
+    "@assemblyscript/loader": "^0.18.24",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "assemblyscript": "^0.18.24"
