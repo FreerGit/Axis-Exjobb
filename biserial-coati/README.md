@@ -7,8 +7,5 @@ clang <src-file> \
 <if-on-windows> - ws2_32.lib advapi32.lib userenv.lib ntdll.lib shell32.lib ole32.lib \
 wasmtime/target/release/libwasmtime.a \
 <relative-path-to>/biserial-coati/wrappers/wasmtime_wrapper.c \
-<<<<<<< HEAD
 -o <destination>
-=======
--o <destination>
->>>>>>> 85386a0 (chore: updated readme)
+
