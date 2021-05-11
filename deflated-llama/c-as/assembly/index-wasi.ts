@@ -1,5 +1,5 @@
 // The entry file of your WebAssembly module.
-import 'wasi';
+import "wasi";
 import { Console } from 'as-wasi';
 
 export function gcd(a: i32, b: i32): i32 {
@@ -10,4 +10,4 @@ export function gcd(a: i32, b: i32): i32 {
   }
 }
 
-Console.log('gcd(48, 18) = ' + gcd(48, 18).toString());
+Console.log('gcd(50,21) = ' + gcd(50, 21).toString())
