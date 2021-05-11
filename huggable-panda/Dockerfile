@@ -11,10 +11,17 @@ RUN apt-get install -y clang
 # ENTRYPOINT [ "/bin/bash" ]
 
 COPY ./app /opt/app/
-COPY ./wasmtime/crates/ /opt/app/wasmtime/crates/
+COPY ./our_build /opt/app/build
 
-COPY ./wasmtime/target/release/libwasmtime.a /opt/app/wasmtime/target/release/libwasmtime.dylib
+# COPY ./wasmtime/crates/ /opt/app/wasmtime/crates/
+
+# COPY ./wasmtime/target/release/libwasmtime.a /opt/app/wasmtime/target/release/libwasmtime.dylib
 WORKDIR /opt/app
-RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
+RUN tar -xvf wasmtime-c-api-0.26-linux.tar.xz -C /opt/app/
+RUN rm -f wasmtime-c-api-0.26-linux.tar.xz
+RUN mv wasmtime-c-api-0.26-linux wasmtime
+RUN mv /opt/app/src/* /opt/app/
+
+# RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
 # RUN create-package.sh
 SHELL ["/bin/bash", "-c"]

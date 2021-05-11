@@ -97,7 +97,10 @@ int main()
   }
   assert(results[0].kind == WASM_I32);
 
+  openlog("fibbers", LOG_PID|LOG_CONS, LOG_USER);
   syslog(LOG_INFO, "fibb(40) = %d\n", results[0].of.i32);
+  closelog();
+  printf("fibb(40) = %d\n", results[0].of.i32);
 
   // Clean up after ourselves
   wasm_extern_vec_delete(&externs);
