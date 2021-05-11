@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <wasm.h>
 #include <wasmtime.h>
+#include <syslog.h>
 
 static void exit_with_error(const char *message, wasmtime_error_t *error, wasm_trap_t *trap)
 {
@@ -79,7 +80,6 @@ int main()
   // return 0;
   // assert(externs.size == 1);
   wasm_func_t *fibb = wasm_extern_as_func(externs.data[2]);
-
   assert(fibb != NULL);
 
   // Call to fibb
@@ -97,7 +97,7 @@ int main()
   }
   assert(results[0].kind == WASM_I32);
 
-  printf("fibb(%d) = %d\n", 40, results[0].of.i32);
+  syslog(LOG_INFO, "fibb(40) = %d\n", results[0].of.i32);
 
   // Clean up after ourselves
   wasm_extern_vec_delete(&externs);

@@ -2,7 +2,7 @@
 
 long fibcache_values[DCACHE_SIZE] = {0};
 
-long fibb(int n)
+long fibb(long n)
 {
   if (n <= 0)
     return 0;
