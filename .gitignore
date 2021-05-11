@@ -5,3 +5,4 @@ package-lock.json
 *.wat
 *.out
 .DS_Store
+.vscode
