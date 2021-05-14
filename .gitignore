@@ -1,5 +1,5 @@
 # Ignore all, for ignoring executable binaries
-*
+#*
 
 # Unignore all with extension
 !*.*
@@ -21,3 +21,5 @@ package-lock.json
 *.out
 .DS_Store
 .vscode
+__pycache__
+.mypy_cache
