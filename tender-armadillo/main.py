@@ -3,9 +3,10 @@ from wasmer import engine, Store, Module, Instance
 from wasmer_compiler_cranelift import Compiler
 import slow_sieve
 import sieve
+import sys
 from datetime import datetime
 
-upto = 3000
+upto = int(sys.argv[1])
 
 timerstart = datetime.now()
 print(f'{slow_sieve.sieve_through(upto)}')
