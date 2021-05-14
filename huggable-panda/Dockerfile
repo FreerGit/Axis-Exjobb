@@ -22,6 +22,6 @@ RUN rm -f wasmtime-c-api-0.26-linux.tar.xz
 RUN mv wasmtime-c-api-0.26-linux wasmtime
 RUN mv /opt/app/src/* /opt/app/
 
-# RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
+RUN . /opt/axis/acapsdk/environment-setup* 
 # RUN create-package.sh
 SHELL ["/bin/bash", "-c"]
