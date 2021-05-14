@@ -1,3 +1,5 @@
 *.wasm
 *.wat
-wasmtime
+*.tar*
+*.xz*
+*.eap

@@ -17,3 +17,9 @@ wasmtime/target/release/libwasmtime.a \
 ```
 
 ## fibb.rs -> fibb.wasm
+
+
+
+## MONDAY
+Executing c program from c program may not output to the same shell, log works in main_wasmtime 
+alternative to system()??
