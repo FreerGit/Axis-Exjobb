@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "acapPackageConf": {
+    "setup": {
+      "friendlyName": "Hello Glib",
+      "appName": "runner",
+      "vendor": "Jesus Incorporated",
+      "version": "2.0.0",
+      "embeddedSdkVersion": "2.0",
+      "runMode": "always",
+      "user": {
+        "group": "sdk",
+        "username": "sdk"
+      }
+    },
+    "configuration": {
+      "httpConfig": [
+        {
+          "access": "viewer",
+          "name": "example.cgi",
+          "type": "transferCgi"
+        }
+      ]
+    }
+  }
+}
