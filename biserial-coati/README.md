@@ -1,4 +1,5 @@
 # To compile another file
+```
 clang <src-file> \
 -I <relative-path-to>/biserial-coati/headers \
 -I <relative-path-to>/wasmtime/crates/c-api/include \
@@ -8,4 +9,7 @@ clang <src-file> \
 wasmtime/target/release/libwasmtime.a \
 <relative-path-to>/biserial-coati/wrappers/wasmtime_wrapper.c \
 -o <destination>
+```
 
+# Notes
+Not intended to be run standalone
