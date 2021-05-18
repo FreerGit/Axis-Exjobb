@@ -35,7 +35,8 @@ int main()
   assert(store != NULL);
 
   // Load wasm file
-  FILE *file = fopen("build/fibb.wasm", "r");
+  // Must be relative to execution location of file
+  FILE *file = fopen("/mnt/flash/usr/local/packages/main_wasmtime/opt/app/build/fibb.wasm", "r");
   if (!file)
   {
     printf("> Error loading file! %s\n", strerror(errno));
@@ -97,9 +98,9 @@ int main()
   }
   assert(results[0].kind == WASM_I32);
 
-  openlog("fibbers", LOG_PID|LOG_CONS, LOG_USER);
-  syslog(LOG_INFO, "fibb(40) = fdsafdsafdsfadsa");
-  closelog();
+  // openlog("fibbers", LOG_PID|LOG_CONS, LOG_USER);
+  // syslog(LOG_DEBUG, "fibb(40) = %d", results[0].of.i32);
+  // closelog();
   printf("fibb(40) = %d\n", results[0].of.i32);
 
   // Clean up after ourselves

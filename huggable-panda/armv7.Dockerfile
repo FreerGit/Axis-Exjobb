@@ -8,20 +8,11 @@ RUN apt-get update
 
 RUN apt-get install -y clang
 
-# RUN curl https://sh.rustup.rs -sSf -y 1 | bash
-
-# ENTRYPOINT [ "/bin/bash" ]
-
 COPY ./app /opt/app/
 COPY ./our_build /opt/app/build
 
-# COPY ./wasmtime/crates/ /opt/app/wasmtime/crates/
-
-# COPY ./wasmtime/target/release/libwasmtime.a /opt/app/wasmtime/target/release/libwasmtime.dylib
-
 RUN mkdir wasmer
 RUN mkdir wasmtime
-
 
 # x86_64 architecture 
 RUN tar -xvf wasmer-linux-amd64.tar.gz -C /opt/app/wasmer 
@@ -42,6 +33,5 @@ RUN . /opt/axis/acapsdk/environment-setup*
 
 #copy over the interepter and all of its .o files
 # RUN cp /usr/aarch64-linux-gnu/lib/* /lib/
-#&& create-package.sh
-# RUN create-package.sh
+
 SHELL ["/bin/bash", "-c"]
