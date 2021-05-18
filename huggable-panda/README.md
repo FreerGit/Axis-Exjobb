@@ -23,3 +23,12 @@ wasmtime/target/release/libwasmtime.a \
 ## MONDAY
 Executing c program from c program may not output to the same shell, log works in main_wasmtime 
 alternative to system()??
+
+
+popen() - parse the output of child???
+
+## NOTES FOR ARMv7
+Do not compile with makefile, the os will append compile options that does not work.
+use:
+clang runner-wasmtime.c -I wasmtime/include/ -L wasmtime/lib/ wasmtime/lib/libwasmtime.so -ldl -lpthread -lm -o runner-wasmtime
+for example
