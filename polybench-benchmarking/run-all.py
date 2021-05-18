@@ -44,38 +44,37 @@ def main():
   cntr = 1
   seperator="-"*30
   # Main game-loop
-    while cntr <= passes:
-      cntr += 1
-      for benchmark in os.listdir('./wasm-binaries'):
-        print(seperator)
-        filename=subprocess.check_output(f'basename {benchmark} .wasm', shell=True).decode('UTF-8').rstrip("\n")
-        if ost == "l":
-          gtime="/usr/bin/time -f '%M' -ao results/memory/"
-        elif ost == "m":
-          gtime="gtime -f '%M' -ao results/memory/"
-
-        print(f'running benchmark for {filename}')
-        
-        # #wasmerslow
-        # calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
-        # writeTime("wasmerslow", filename, calltime)
-
-        # #wasmerllvm
-        # calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
-        # writeTime("wasmerllvm", filename, calltime)
-
-        # #wasmtime
-        # calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
-        # writeTime("wasmtime", filename, calltime)
-
-        #docker hot start
-        # calltime = timeCall(f"{gtime}c/{filename}.txt ./c-binaries/{filename}")
-        pwd = os.getcwd()
-        copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
-        chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
-        calltime = timeCall(f"{gtime}c/{filename}.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
-        writeTime("c", filename, calltime)
+  while cntr <= passes:
+    cntr += 1
+    for benchmark in os.listdir('./wasm-binaries'):
       print(seperator)
+      filename=subprocess.check_output(f'basename {benchmark} .wasm', shell=True).decode('UTF-8').rstrip("\n")
+      if osarg == "l":
+        gtime="/usr/bin/time -f '%M' -ao results/memory/"
+      elif osarg == "m":
+        gtime="gtime -f '%M' -ao results/memory/"
+
+      print(f'running benchmark for {filename}')
+      
+      #wasmerslow
+      calltime = timeCall(f"{gtime}wasmerslow/{filename}.txt wasmer run ./wasm-binaries/{benchmark}")
+      writeTime("wasmerslow", filename, calltime)
+
+      #wasmerllvm
+      calltime = timeCall(f"{gtime}wasmerllvm/{filename}.txt wasmer run --llvm ./wasm-binaries/{benchmark}")
+      writeTime("wasmerllvm", filename, calltime)
+
+      #wasmtime
+      calltime = timeCall(f"{gtime}wasmtime/{filename}.txt wasmtime run ./wasm-binaries/{benchmark}")
+      writeTime("wasmtime", filename, calltime)
+
+      #docker hot start
+      pwd = os.getcwd()
+      copyFile = f"-v {pwd}/c-binaries/{filename}:/exec/{filename}"
+      chmodAndRun = f"chmod +x /exec/{filename}; ./exec/{filename}"
+      calltime = timeCall(f"{gtime}c/{filename}.txt docker run --rm {copyFile} debian /bin/bash -c \"{chmodAndRun}\"")
+      writeTime("c", filename, calltime)
+    print(seperator)
         
 if __name__ == "__main__":
   main()
