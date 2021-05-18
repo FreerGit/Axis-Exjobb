@@ -15,4 +15,3 @@ export function fib(n: u64, cache: Map<u64, u64> = new Map<u64, u64>()): u64 {
 	cache.set(n, (fib(n - 1, cache) + fib(n - 2, cache)));
 	return cache.get(n);
 }
-
