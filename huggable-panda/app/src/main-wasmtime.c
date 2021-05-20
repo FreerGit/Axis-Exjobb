@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-uint FP_MAX = 100;
+uint FP_MAX = 10000;
 int main(int argc, char *argv[]){
     char runner_name[] = "runner_wasmtime"; // placeholder
     openlog("fibbers", LOG_PID|LOG_CONS, LOG_USER);
@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
     FILE* fp;
     char path[FP_MAX];
 
-    fp = popen("/mnt/flash/usr/local/packages/main_wasmtime/opt/app/runner-wasmtime", "r"); 
+    fp = popen("./runner-wasmtime", "r"); 
     assert(fp != NULL);
     
     // Read output of popen call, basically redirect printf from called function

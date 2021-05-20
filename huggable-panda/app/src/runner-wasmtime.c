@@ -36,7 +36,7 @@ int main()
 
   // Load wasm file
   // Must be relative to execution location of file
-  FILE *file = fopen("/mnt/flash/usr/local/packages/main_wasmtime/opt/app/build/fibb.wasm", "r");
+  FILE *file = fopen("build/fibb.wasm", "r");
   if (!file)
   {
     printf("> Error loading file! %s\n", strerror(errno));

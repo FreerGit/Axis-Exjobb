@@ -3,11 +3,11 @@
   "acapPackageConf": {
     "setup": {
       "friendlyName": "Hello Glib",
-      "appName": "runner",
+      "appName": "main_wasmtime",
       "vendor": "Jesus Incorporated",
       "version": "2.0.0",
       "embeddedSdkVersion": "2.0",
-      "runMode": "always",
+      "runMode": "once",
       "user": {
         "group": "sdk",
         "username": "sdk"

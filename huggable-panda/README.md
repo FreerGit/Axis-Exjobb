@@ -2,6 +2,10 @@
 This showcases how to use wasmtime in c, and how to create
 a Docker container to use on Axis cameras.
 
+You probably have a better idea how to do packaging, but we simply run: acap-build -m manifest.json -a build/fibb.wasm -a runner-wasmtime .
+
+So that we get the files needed in the same directory at runetime on the camera. 
+
 # Compilation
 ## fibb.c -> fibb.wasm
 ```
@@ -16,16 +20,6 @@ wasmtime/target/release/libwasmtime.a \
 -o build/main src/main.c
 ```
 
-## fibb.rs -> fibb.wasm
-
-
-
-## MONDAY
-Executing c program from c program may not output to the same shell, log works in main_wasmtime 
-alternative to system()??
-
-
-popen() - parse the output of child???
 
 ## NOTES FOR ARMv7
 Do not compile with makefile, the os will append compile options that does not work.
