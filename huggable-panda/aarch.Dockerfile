@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y clang
 COPY ./app /opt/app/
 COPY ./our_build /opt/app/build
 
+WORKDIR /opt/app
+
 RUN mkdir wasmer && mkdir wasmtime
 
 RUN tar -xvf wasmer-linux-aarch64.tar.gz -C /opt/app/wasmer
@@ -33,3 +35,5 @@ RUN . /opt/axis/acapsdk/environment-setup* && create-package.sh
 RUN cp /usr/aarch64-linux-gnu/lib/* /lib/
 
 SHELL ["/bin/bash", "-c"]
+
+RUN chmod +x start.sh
