@@ -4,3 +4,5 @@
 *.tar*
 *.xz*
 *.eap
+wasi-sdk*
+wasmtime-v*
