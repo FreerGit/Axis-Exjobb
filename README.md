@@ -53,46 +53,35 @@ __Notes__:
 
 ## Basic folder structure:
 ```
-Axis-Exjobb
 ├── biserial-coati
-│   ├── headers    
+│   ├── headers
+│   ├── wasmtime-v0.26.0-aarch64-linux-c-api
 │   └── wrappers
+├── crusty-cat
+│   ├── as-version
+│   └── src
 ├── deflated-llama
 │   ├── assemblyscript
 │   └── c-as
 ├── huggable-panda
-│   ├── app
-│   ├── our_build
-│   └── src
+│   ├── fibb-wasm
+│   └── vdostream-wasm
 ├── node-AS-server
 │   ├── assembly
 │   ├── build
 │   ├── lib
+│   ├── node_modules
 │   └── tests
 ├── polybench-benchmarking
-│   ├── polybench-src
-│   │   └── PolyBenchC-4
-│   └── results
-│       ├── memory
-│       │   ├── docker
-│       │   ├── wasmerllvm
-│       │   ├── wasmerslow
-│       │   └── wasmtime
-│       └── time
-│           ├── docker
-│           ├── wasmerllvm
-│           ├── wasmerslow
-│           └── wasmtime
-├── startup-benchmarking
 │   ├── c-binaries
+│   ├── polybench-src
 │   ├── results
-│   │   ├── docker
-│   │   ├── wasmerllvm
-│   │   ├── wasmerslow
-│   │   └── wasmtime
+│   └── wasm-binaries
+├── startup-benchmarking
 │   ├── src
 │   └── wasm-binaries
 ├── tender-armadillo
+│   ├── __pycache__
 │   └── sieve
 └── wasi-sdks
     ├── wasi-sdk-12.0-linux
