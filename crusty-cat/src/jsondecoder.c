@@ -16,7 +16,7 @@ static int newline_offset(const char *text)
 
 int main(int argc, char *argv[])
 {
-  for (int x = 0; x < 3; x++)
+  for (int x = 0; x < 50; x++)
   {
     size_t i;
     char *text;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     json_t *root;
     json_error_t error;
 
-    FILE *json = fopen("tets.json", "r");
+    FILE *json = fopen("commits.json", "r");
     if (json)
     {
       long length;
@@ -60,54 +60,49 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < json_array_size(root); i++)
     {
-      json_t *objec, *balance, *name, *gender, *active;
+      json_t *data, *sha, *commit, *message;
       const char *message_text;
-      objec = json_array_get(root, i);
-      if (!json_is_object(objec))
+
+      data = json_array_get(root, i);
+      if (!json_is_object(data))
       {
         fprintf(stderr, "error: commit data %d is not an object\n", i + 1);
         json_decref(root);
         return 1;
       }
-
-      balance = json_object_get(objec, "balance");
-      if (!json_is_string(balance))
+      sha = json_object_get(data, "sha");
+      if (!json_is_string(sha))
       {
-        fprintf(stderr, "error: balance is not a string\n");
+        fprintf(stderr, "error: commit %d: sha is not a string\n", i + 1);
         json_decref(root);
         return 1;
       }
 
-      name = json_object_get(objec, "name");
-      if (!json_is_string(name))
+      commit = json_object_get(data, "commit");
+      if (!json_is_object(commit))
       {
-        fprintf(stderr, "error: name is not a string\n");
+        fprintf(stderr, "error: commit %d: commit is not an object\n", i + 1);
         json_decref(root);
         return 1;
       }
 
-      gender = json_object_get(objec, "gender");
-      if (!json_is_string(gender))
+      message = json_object_get(commit, "message");
+      if (!json_is_string(message))
       {
-        fprintf(stderr, "error: gender is not a string\n");
+        fprintf(stderr, "error: commit %d: message is not a string\n", i + 1);
         json_decref(root);
         return 1;
       }
-
-      active = json_object_get(objec, "isActive");
-      if (!json_is_boolean(active))
-      {
-        fprintf(stderr, "error: actice is not a boolean\n");
-        json_decref(root);
-        return 1;
-      }
-
-      printf(
-          "Name: %s\nGender: %s\nBalance: %s\nIs active: %s\n\n",
-          json_string_value(name),
-          json_string_value(gender),
-          json_string_value(balance),
-          btoa(json_boolean_value(active)));
+      message_text = json_string_value(message);
+      printf("%d -> %.8s %.*s\n",
+             i + 1,
+             json_string_value(sha),
+             newline_offset(message_text),
+             message_text);
+      free(data);
+      free(commit);
+      free(message);
+      free(sha);
     }
     json_decref(root);
   }

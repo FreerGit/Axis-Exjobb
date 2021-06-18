@@ -13,7 +13,7 @@ EMCC = emcc -O3
 # CFLAGS += -I/Users/sebastig/Downloads/wasm-marching-squares-master/include/jansson-2.13.1/emcc-lib/include
 # LDFLAGS += /Users/sebastig/Downloads/wasm-marching-squares-master/include/jansson-2.13.1/emcc-lib/lib/libjansson.a
 $(PROG1): $(OBJS1)
-	clang $(CFLAGS) $(LDFLAGS) $^ $(LIBS) $(LDLIBS) -o $@.out
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LIBS) $(LDLIBS) -o $@
 
 clean:
 	rm -f $(PROGS) *.o *.eap *.wasm
