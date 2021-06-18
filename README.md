@@ -6,7 +6,7 @@
 ---
 ## Repository Overview
 Check each individual file for a more information about each directory
-### Biserial Coati 🎮
+### Biserial Coati 🐒
 __Contains__:
 * Wrappers for WasmTime to ease the development process.
 ---
