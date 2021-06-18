@@ -2,14 +2,22 @@
 
 ## Important notes
 * Some projects may require downloads of sdks and or executables, before reading and or running code in any projects, look at its respective README for information. For example, some project requires the download of certain c-apis to run.
+
 ---
 ## Repository Overview
 Check each individual file for a more information about each directory
-### Biserial Coati
+### Biserial Coati 🐒
 __Contains__:
 * Wrappers for WasmTime to ease the development process.
 ---
-### Deflated LLama
+### Crusty Cat 🐈
+__Contains__:
+* A C-version of a JSON-parser that digests github-commits and prints relevant data.
+* commit.json, that contains commits from [github.com/freergit/authentication-with-haskell](https://github.com/freergit/authentication-with-haskell.git)
+* Parser.c, a version of the JSON-parser with added Emscripten flags.
+* A copy of the JSON-parsin library Jansson, Version 2.13.1
+---
+### Deflated LLama🦙
 __Contains__:
 * __C-AS__
   * Examples of using Wasmer and WasmTime in C. For WasmTime, wrappers from *Biserial Coati* is used.
@@ -17,33 +25,33 @@ __Contains__:
 * __AssemblyScript__
   * Implementation of memoized Fibbonacci in AssemblyScript.
 ---
-### Huggable panda
+### Huggable panda 🐼
 __Contains__:
 * Example for running WasmTime inside a c-file on a **aarch64**-compatible Axis Camera
 ---
 __Notes__:
 * Major part of the Axis-part of our thesis, essentially test development to see the use cases on the cameras and the use-ability. Cross-compilation and running .eap files and such.
 __
-### Node AS Server
+### Node AS Server 😎
 __Contains__:
 * A simple Node Server with Wasm functions.
 ---
-### Polybench Benchmarking
+### Polybench Benchmarking 📈
 __Contains__:
 * All relevant files for running Polybench in Wasmer/WasmTime and on Docker.
 
 __Notes__:
 * This is the biggest part of our thesis, these tests, including startup benchmarking is used to collect data for the paper.
 ---
-### Startup Benchmarking
+### Startup Benchmarking 📉
 __Contains__:
 * Files for benchmarking startup for Wasmer/WasmTime and Docker
 ---
-### Tender Armadillo
+### Tender Armadillo 👽
 __Contains__:
 * Benchmarks comparing native Python to Wasm compiled from Rust.
 ---
-### WASI SDKS
+### WASI SDKS 👺
 __Contains__:
 * Highly important directory containing the sdk for wasi, both mac and linux.
 
@@ -58,7 +66,6 @@ __Notes__:
 │   ├── wasmtime-v0.26.0-aarch64-linux-c-api
 │   └── wrappers
 ├── crusty-cat
-│   ├── as-version
 │   └── src
 ├── deflated-llama
 │   ├── assemblyscript

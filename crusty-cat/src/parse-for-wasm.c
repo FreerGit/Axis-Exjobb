@@ -1,7 +1,11 @@
 #include <string.h>
-#include <jansson.h>
+#include "/opt/jansson-2.13.1/include/jansson.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <emscripten.h>
+
+#define FS_PREFIX "fs"
 
 static int newline_offset(const char *text)
 {
@@ -11,15 +15,25 @@ static int newline_offset(const char *text)
     else
         return (int)(newline - text);
 }
+const char* buildRelativeFilePath(const char* filename) {
+	char *path;
+	asprintf(&path, "%s/%s", FS_PREFIX, filename);
+	return path;
+}
 
 int main()
 {   
+	EM_ASM({
+    		var directory = '/' + UTF8ToString($0);
+    		FS.mkdir(directory);
+    		FS.mount(NODEFS, {root : '.'}, directory);
+	}, FS_PREFIX);
     for(int pass = 0; pass < 50; pass++){
 
     // mount the current folder as a NODEFS instance
 	// inside of emscripten
 
-    FILE *f = fopen("commits.json", "rb");
+    FILE *f = fopen(buildRelativeFilePath("commits.json"), "rb");
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
     fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
